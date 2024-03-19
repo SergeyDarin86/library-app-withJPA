@@ -2,7 +2,7 @@
 <!-- мы должны указать, что используем Thymeleaf -->
 <!--html-форма в Thymeleaf принимает на вход объект, для которого она собственно и создана
 т.е. если мы его (Thymeleaf) используем, то должны внедрить объект в контроллере-->
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Все читатели</title>
@@ -10,7 +10,7 @@
 <body>
 
 <div th:each="person: ${people}">
-    <a th:href="@{/people/{id}(id=${person.getId()})}" style="color: darkgreen" th:text="${person.getFullName()
+    <a th:href="@{/library/people/{id}(id=${person.getPersonId()})}" th:text="${person.getFullName()
     + '|| ' + person.getYearOfBirthday()}">user</a>
 
 </div>
@@ -18,7 +18,8 @@
 <br/>
 <hr/>
 
-<a href="/people/new">Добавить нового читателя</a>
+<a href="/library/newPerson">Добавить нового читателя</a>
+<!--<p th:text="${person.getFullName()}">value</p>-->
 
 </body>
 </html>

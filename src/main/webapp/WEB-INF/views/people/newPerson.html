@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta  charset="UTF-8">
+    <title>Новый читатель</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/library}" th:object="${person}">
+    <!--  указываем поле, которое есть у нашего объекта person/ обратить внимание на синтаксис  -->
+    <label for="year">Введите год: </label>
+    <input type="text" th:field="*{yearOfBirthday}" id="year">
+    <p th:if="${#fields.hasErrors('yearOfBirthday')}" th:errors="*{yearOfBirthday}">Year error</p>
+    <br/>
+    <label for="fullName">Введите ФИО: </label>
+    <input type="text" th:field="*{fullName}" id="fullName">
+    <p th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">FullName error</p>
+    <br/>
+    <input type="submit" value="Добавить">
+</form>
+
+</body>
+</html>
