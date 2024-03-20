@@ -6,18 +6,22 @@ public class Book {
 
     private int bookId;
 
-    @NotEmpty(message = "Year of Realise should not be empty")
-    @Pattern(regexp = "\\d{4}",message = "The format has to be: (4 numbers)")
-    private String yearOfRealise;
+    @NotNull(message = "Year of Realise should not be empty")
+//    @Pattern(regexp = "\\d{4}",message = "The format has to be: (4 numbers)")
+    private int yearOfRealise;
 
     @NotEmpty(message = "Title of Book should not be empty")
     @Size(min = 1, max = 100, message = "Title should be between 1 and 100 characters")
+    @Pattern(regexp = "[А-ЯЁ].+")
     private String title;
 
     @NotEmpty(message = "Author should not be empty")
-    @Size(min = 8, max = 50, message = "Author should be between 8 and 50 characters")
-    @Pattern(regexp = "[A-Z]\\w+ [A-Z]\\w+", message = "The Author should have the format: Surname Name")
+    @Size(min = 5, max = 50, message = "Author should be between 5 and 50 characters")
+    @Pattern(regexp = "[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+", message = "The Author should have the format: Surname Name")
     private String author;
+
+    @NotNull(message = "Person id should not be empty")
+    private int personId;
 
     public int getBookId() {
         return bookId;
@@ -27,11 +31,11 @@ public class Book {
         this.bookId = bookId;
     }
 
-    public String getYearOfRealise() {
+    public int getYearOfRealise() {
         return yearOfRealise;
     }
 
-    public void setYearOfRealise(String yearOfRealise) {
+    public void setYearOfRealise(int yearOfRealise) {
         this.yearOfRealise = yearOfRealise;
     }
 
@@ -49,5 +53,13 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public int getPersonId() {
+        return personId;
+    }
+
+    public void setPersonId(int personId) {
+        this.personId = personId;
     }
 }

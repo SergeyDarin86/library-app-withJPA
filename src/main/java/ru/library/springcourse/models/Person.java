@@ -12,13 +12,15 @@ public class Person {
     // записей было равно 0 (((
     private int personId;
 
+    // на данный момент regex для кириллицы
     @NotEmpty(message = "FullName should not be empty")
     @Size(min = 8, max = 100, message = "The FullName should be between 8 and 100 characters")
-//    @Pattern(regexp = "[A-Z]\\w+ [A-Z]\\w+ [A-Z]\\w+", message = "The FullName should have the format: Surname Name Patronymic")
+    @Pattern(regexp = "[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+", message = "The FullName should have the format: Surname Name Patronymic")
     private String fullName;
 
+
+    //TODO: посмотреть как настроить Pattern для числового поля, чтобы вводить только 4 символа для г.р.
 //    @Pattern(regexp = "\\d{4}",message = "The format has to be: (4 numbers)")
-//    @Max(value = 2018, message = "The person has to be born at least in 2018 year")
     @Min(value = 1900, message = "Year of Birthday should be more than 1900")
     @NotNull(message = "not null")
     private int yearOfBirthday;

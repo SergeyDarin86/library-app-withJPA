@@ -10,7 +10,7 @@
 <body>
 
 <div th:each="book: ${books}">
-    <a th:href="@{/books/{id}(id=${book.getBookId()})}" style="color: deepskyblue" th:text="${book.getTitle()
+    <a th:href="@{/library/books/{id}(id=${book.getBookId()})}" style="color: deepskyblue" th:text="${book.getTitle()
     + '|| ' + book.getYearOfRealise() + ' || ' + book.getAuthor()}">book</a>
 
 </div>
@@ -18,7 +18,7 @@
 <br/>
 <hr/>
 
-<a href="/book/new">Добавить книгу</a>
+<a href="/library/newBook">Добавить книгу</a>
 
 </body>
 </html>
