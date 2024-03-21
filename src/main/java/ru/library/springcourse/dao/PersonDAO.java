@@ -39,4 +39,14 @@ public class PersonDAO {
                 person.getFullName(), person.getYearOfBirthday());
     }
 
+    public void update(int id, Person updatedPerson) {
+        System.out.println(id + " id || " + updatedPerson.getPersonId() + " <-- updatedPerson from DAO");
+        jdbcTemplate.update("UPDATE Person SET full_name=?, year_of_birthday=? WHERE person_id=?",
+                updatedPerson.getFullName(), updatedPerson.getYearOfBirthday(), id);
+    }
+
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM Person WHERE person_id=?", id);
+    }
+
 }

@@ -35,7 +35,7 @@ public class BookController {
     }
 
     @GetMapping("/people")
-    public String people(Model model){
+    public String people(Model model) {
         model.addAttribute("people", personDAO.allReaders());
 
 //        List<Person>personList = personDAO.allReaders();
@@ -44,7 +44,7 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public String books(Model model){
+    public String books(Model model) {
         model.addAttribute("books", bookDAO.allBooks());
         return "/books/books";
     }
@@ -58,7 +58,7 @@ public class BookController {
     public String createBook(@ModelAttribute("book") @Valid Book book
             , BindingResult bindingResult) {
 
-        bookValidator.validate(book,bindingResult);
+        bookValidator.validate(book, bindingResult);
 
         if (bindingResult.hasErrors())
             return "books/newBook";
@@ -86,7 +86,7 @@ public class BookController {
     public String create(@ModelAttribute("person") @Valid Person person
             , BindingResult bindingResult) {
 
-        personValidator.validate(person,bindingResult);
+        personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors())
             return "people/newPerson";
@@ -104,7 +104,34 @@ public class BookController {
         return "people/showPerson";
     }
 
+    @GetMapping("/people/{id}/edit")
+    public String editPerson(Model model, @PathVariable("id") int id) {
+        model.addAttribute("person", personDAO.show(id));
+        return "people/editPerson";
+    }
 
+    // чтобы Spring смог читать значение скрытого поля (_method) необходимо использовать фильтр
+    @PatchMapping("/people/{id}")
+    public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
+                         @PathVariable("id") int id) {
+//        return personService.update(person,bindingResult,id);
+        System.out.println(person.getPersonId() + " " + person.getYearOfBirthday() + " || From controller");
+        System.out.println(id + " ID");
+        personValidator.validate(person,bindingResult);
+
+        if (bindingResult.hasErrors())
+            return "people/editPerson";
+
+        personDAO.update(id, person);
+        return "redirect:/library/people";
+    }
+
+    @DeleteMapping("/people/{id}")
+    public String delete(@PathVariable("id") int id) {
+        System.out.println(id + " From DeleteController");
+        personDAO.delete(id);
+        return "redirect:/library/people";
+    }
 
 
 }

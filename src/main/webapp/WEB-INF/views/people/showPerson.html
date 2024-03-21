@@ -10,11 +10,11 @@
 <a th:text="${person.getYearOfBirthday()}">VALUE</a>
 <p th:text="${person.getPersonId()}">VALUE</p>
 
-<!--<a th:href="@{/people/{id}/edit(id=${person.getId()})}">Edit</a>-->
+<a th:href="@{/library/people/{id}/edit(id=${person.getPersonId()})}">Редактировать</a>
 
-<!--<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}">-->
-<!--  <input type="submit" value="Delete">-->
-<!--</form>-->
+<form th:method="DELETE" th:action="@{/library/people/{id}(id=${person.getPersonId()})}">
+  <input type="submit" value="Удалить">
+</form>
 
 </body>
 </html>

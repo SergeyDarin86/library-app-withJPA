@@ -20,8 +20,8 @@ public class Book {
     @Pattern(regexp = "[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+", message = "The Author should have the format: Surname Name")
     private String author;
 
-    @NotNull(message = "Person id should not be empty")
-    private int personId;
+//    @NotNull(message = "Person id should not be empty")
+    private Integer personId;
 
     public int getBookId() {
         return bookId;
@@ -55,11 +55,11 @@ public class Book {
         this.author = author;
     }
 
-    public int getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 }
