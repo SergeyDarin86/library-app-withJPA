@@ -37,7 +37,9 @@ public class PersonValidator implements Validator {
         // (хотя он относится к редактируемому на данный момент человеку)
 
         if (personDAO.show(person.getFullName()).isPresent()) {
+            System.out.println(person.getFullName() + " <- FullName " + person.getPersonId() + " <- id");
             if (personDAO.show(person.getFullName()).get().getPersonId() != person.getPersonId()) {
+                System.out.println(personDAO.show(person.getFullName()).get().getPersonId() + " <-||-> " + person.getPersonId());
                 errors.rejectValue("fullName", "", "This fullName already is used by someone");
             }
         }

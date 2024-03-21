@@ -76,6 +76,33 @@ public class BookController {
         return "books/showBook";
     }
 
+    @GetMapping("/books/{id}/edit")
+    public String editBook(Model model, @PathVariable("id") int id) {
+        model.addAttribute("book", bookDAO.show(id));
+        return "books/editBook";
+    }
+
+    // чтобы Spring смог читать значение скрытого поля (_method) необходимо использовать фильтр
+    @PatchMapping("/books/{id}")
+    public String updateBook(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
+                               @PathVariable("id") int id) {
+//
+//        personValidator.validate(person,bindingResult);
+//
+//        if (bindingResult.hasErrors())
+//            return "people/editPerson";
+//
+//        personDAO.update(id, person);
+        return "redirect:/library/books";
+    }
+
+    @DeleteMapping("/books/{id}")
+    public String deleteBook(@PathVariable("id") int id) {
+        System.out.println(id + " From DeleteController");
+        bookDAO.delete(id);
+        return "redirect:/library/books";
+    }
+
     @GetMapping("/newPerson")
     public String newPerson(@ModelAttribute Person person) {
         return "people/newPerson";
@@ -112,11 +139,13 @@ public class BookController {
 
     // чтобы Spring смог читать значение скрытого поля (_method) необходимо использовать фильтр
     @PatchMapping("/people/{id}")
-    public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
+    public String updatePerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
                          @PathVariable("id") int id) {
 //        return personService.update(person,bindingResult,id);
         System.out.println(person.getPersonId() + " " + person.getYearOfBirthday() + " || From controller");
         System.out.println(id + " ID");
+
+
         personValidator.validate(person,bindingResult);
 
         if (bindingResult.hasErrors())
@@ -127,7 +156,7 @@ public class BookController {
     }
 
     @DeleteMapping("/people/{id}")
-    public String delete(@PathVariable("id") int id) {
+    public String deletePerson(@PathVariable("id") int id) {
         System.out.println(id + " From DeleteController");
         personDAO.delete(id);
         return "redirect:/library/people";

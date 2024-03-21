@@ -38,4 +38,8 @@ public class BookDAO {
                 .stream().findAny();
     }
 
+    public void delete(int id) {
+        jdbcTemplate.update("DELETE FROM Book WHERE book_id=?", id);
+    }
+
 }

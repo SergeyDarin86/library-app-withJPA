@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>Читатель</title>
 </head>
 <body>
 
 <p th:text="${person.getFullName()}">VALUE</p>
 <a th:text="${person.getYearOfBirthday()}">VALUE</a>
-<p th:text="${person.getPersonId()}">VALUE</p>
+<!--<p th:text="${person.getPersonId()}">VALUE</p>-->
 
 <a th:href="@{/library/people/{id}/edit(id=${person.getPersonId()})}">Редактировать</a>
 
