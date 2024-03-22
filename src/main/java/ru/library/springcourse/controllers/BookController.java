@@ -37,9 +37,6 @@ public class BookController {
     @GetMapping("/people")
     public String people(Model model) {
         model.addAttribute("people", personDAO.allReaders());
-
-//        List<Person>personList = personDAO.allReaders();
-//        personList.stream().forEach(person -> {System.out.println(person.getPersonId() + " " + person.getFullName());});
         return "/people/readers";
     }
 
@@ -84,15 +81,15 @@ public class BookController {
 
     // чтобы Spring смог читать значение скрытого поля (_method) необходимо использовать фильтр
     @PatchMapping("/books/{id}")
-    public String updateBook(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
-                               @PathVariable("id") int id) {
+    public String updateBook(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult,
+                             @PathVariable("id") int id) {
+//        System.out.println(book.getBookId() + " <-- Book Id from Controller | " + book.getYearOfRealise());
+        bookValidator.validate(book, bindingResult);
 //
-//        personValidator.validate(person,bindingResult);
+        if (bindingResult.hasErrors())
+            return "books/editBook";
 //
-//        if (bindingResult.hasErrors())
-//            return "people/editPerson";
-//
-//        personDAO.update(id, person);
+        bookDAO.update(id, book);
         return "redirect:/library/books";
     }
 
@@ -140,13 +137,9 @@ public class BookController {
     // чтобы Spring смог читать значение скрытого поля (_method) необходимо использовать фильтр
     @PatchMapping("/people/{id}")
     public String updatePerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
-                         @PathVariable("id") int id) {
-//        return personService.update(person,bindingResult,id);
-        System.out.println(person.getPersonId() + " " + person.getYearOfBirthday() + " || From controller");
-        System.out.println(id + " ID");
+                               @PathVariable("id") int id) {
 
-
-        personValidator.validate(person,bindingResult);
+        personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors())
             return "people/editPerson";
