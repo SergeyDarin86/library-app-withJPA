@@ -12,7 +12,10 @@
 <p th:text="${book.getPersonId()}">VALUE</p>
 <p th:text="${book.getBookId()}">VALUE</p>
 
-<a th:href="@{/library/books/{id}/edit(id=${book.getBookId()})}">Редактировать</a>
+<!--<a th:href="@{/library/books/{id}/edit(id=${book.getBookId()})}">Редактировать</a>-->
+<form th:action="@{/library/books/{id}/edit(id=${book.getBookId()})}">
+    <input type="submit" value="Редактировать">
+</form>
 
 <form th:method="DELETE" th:action="@{/library/books/{bookId}(bookId=${book.getBookId()})}">
     <input type="submit" value="Удалить">
