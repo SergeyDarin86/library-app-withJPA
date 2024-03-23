@@ -7,6 +7,7 @@ public class Book {
     private int bookId;
 
     @NotNull(message = "Year of Realise should not be empty")
+    @Min(value = 1, message = "Year of Realise should be more than 0")
 //    @Pattern(regexp = "\\d{4}",message = "The format has to be: (4 numbers)")
     private int yearOfRealise;
 
