@@ -19,10 +19,6 @@
   <input type="text" th:field="*{yearOfRealise}" id="yearRealise">
   <p th:if="${#fields.hasErrors('yearOfRealise')}" th:errors="*{yearOfRealise}">YearOfRealise error</p>
   <br/>
-  <label for="idReader">Введите ID пользователя: </label>
-  <input type="text" th:field="*{personId}" id="idReader">
-  <p th:if="${#fields.hasErrors('personId')}" th:errors="*{personId}">PersonId error</p>
-  <br/>
   <h/>
   <input type="submit" value="Добавить">
 </form>

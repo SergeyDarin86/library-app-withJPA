@@ -6,17 +6,28 @@
 </head>
 <body>
 
-<p th:text="${person.getFullName()}">VALUE</p>
-<a th:text="${person.getYearOfBirthday()}">VALUE</a>
-<!--<p th:text="${person.getPersonId()}">VALUE</p>-->
+<p th:text="${person.getFullName() + ', ' + person.getYearOfBirthday()}">VALUE</p>
 
-<!--<a th:href="@{/library/people/{id}/edit(id=${person.getPersonId()})}">Редактировать</a>-->
+<tr th:if="${books.size()==0}">
+    <p style="font-weight: bold"> Человек пока не взял ни одной книги </p>
+</tr>
+
+<tr th:if="${books.size()!=0}">
+    <p style="font-weight: bold">Книги:</p>
+</tr>
+
+<tr th:each="book : ${books}">
+    <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfRealise()}"> Title </p>
+</tr>
+
+<hr/>
+
 <form th:action="@{/library/people/{id}/edit(id=${person.getPersonId()})}">
     <input type="submit" value="Редактировать">
 </form>
-<br/>
+
 <form th:method="DELETE" th:action="@{/library/people/{id}(id=${person.getPersonId()})}">
-  <input type="submit" value="Удалить">
+    <input type="submit" value="Удалить">
 </form>
 
 </body>

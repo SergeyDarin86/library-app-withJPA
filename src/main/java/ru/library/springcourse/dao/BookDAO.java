@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.library.springcourse.models.Book;
+import ru.library.springcourse.models.Person;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,7 @@ public class BookDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Book> allBooks(){
+    public List<Book> allBooks() {
         return jdbcTemplate.query("Select * from Book", new BeanPropertyRowMapper<>(Book.class));
     }
 
@@ -33,9 +34,30 @@ public class BookDAO {
         return jdbcTemplate.query("Select * from Book where book_id=?", new BeanPropertyRowMapper<>(Book.class), new Object[]{id})
                 .stream().findAny().orElse(null);
     }
+
     public Optional<Book> show(String title) {
         return jdbcTemplate.query("Select * From Book where title=?", new BeanPropertyRowMapper<>(Book.class), new Object[]{title})
                 .stream().findAny();
+    }
+
+    public Optional<Person> bookIsUsedByPerson(int bookId) {
+        return jdbcTemplate.query(
+                """
+                            SELECT full_name FROM book JOIN person p
+                            ON p.person_id = book.person_id
+                            WHERE book_id = ?
+                        """
+                , new BeanPropertyRowMapper<>(Person.class), new Object[]{bookId}).stream().findAny();
+    }
+
+    public Book makeBookFree(int bookId) {
+        jdbcTemplate.update("UPDATE book SET person_id = NULL WHERE book_id = ?", bookId);
+        return jdbcTemplate.query("SELECT * FROM Book WHERE book_id = ?", new BeanPropertyRowMapper<>(Book.class), new Object[]{bookId})
+                .stream().findFirst().get();
+    }
+
+    public void assignBook(int bookId, int personId) {
+        jdbcTemplate.update("UPDATE book SET person_id = ? where book_id = ?", personId, bookId);
     }
 
     public void delete(int id) {

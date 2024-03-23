@@ -65,11 +65,16 @@ public class BookController {
     }
 
     @GetMapping("/books/{id}")
-    public String showBook(@PathVariable("id") int id, Model model) {
+    public String showBook(@PathVariable("id") int id, Model model, Model optionalModel,
+                           Model modelAddPerson, @ModelAttribute("person") Person person) {
         // получим одной книги по её id из DAO и передадим на отображение в представление
         model.addAttribute("book", bookDAO.show(id));
+        System.out.println(id + " ID from books || " + bookDAO.bookIsUsedByPerson(id) + " <- book is used");
 
-        System.out.println(id + " ID from books");
+        optionalModel.addAttribute("optionalPerson", bookDAO.bookIsUsedByPerson(id));
+
+        modelAddPerson.addAttribute("people", personDAO.allReaders());
+
         return "books/showBook";
     }
 
@@ -83,14 +88,30 @@ public class BookController {
     @PatchMapping("/books/{id}")
     public String updateBook(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult,
                              @PathVariable("id") int id) {
-//        System.out.println(book.getBookId() + " <-- Book Id from Controller | " + book.getYearOfRealise());
         bookValidator.validate(book, bindingResult);
-//
+
         if (bindingResult.hasErrors())
             return "books/editBook";
-//
+
         bookDAO.update(id, book);
         return "redirect:/library/books";
+    }
+
+    // новый метод
+    @GetMapping("/books/{id}/makeFree")
+    public String makeBookFree(@PathVariable("id") int id) {
+        bookDAO.makeBookFree(id);
+        return "redirect: /library/books/{id}";
+    }
+
+    @GetMapping("/books/{id}/assignPerson")
+    public String assignPerson(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
+
+        System.out.println(person.getPersonId() + " PersonId from Controller");
+        System.out.println(id + " BookId");
+
+        bookDAO.assignBook(id, person.getPersonId());
+        return "redirect: /library/books/{id}";
     }
 
     @DeleteMapping("/books/{id}")
@@ -105,7 +126,6 @@ public class BookController {
         return "people/newPerson";
     }
 
-    //TODO: посмотреть почему проблема с валидатором!!!
     @PostMapping()
     public String create(@ModelAttribute("person") @Valid Person person
             , BindingResult bindingResult) {
@@ -120,11 +140,11 @@ public class BookController {
     }
 
     @GetMapping("/people/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        // получим одного человека по его id из DAO и передадим на отображение в представление
-        model.addAttribute("person", personDAO.show(id));
+    public String show(@PathVariable("id") int id, Model model, Model modelBook) {
 
-        System.out.println(id + " ID from readers");
+        model.addAttribute("person", personDAO.show(id));
+        modelBook.addAttribute("books", personDAO.showBookList(id));
+
         return "people/showPerson";
     }
 
@@ -134,7 +154,6 @@ public class BookController {
         return "people/editPerson";
     }
 
-    // чтобы Spring смог читать значение скрытого поля (_method) необходимо использовать фильтр
     @PatchMapping("/people/{id}")
     public String updatePerson(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
                                @PathVariable("id") int id) {
