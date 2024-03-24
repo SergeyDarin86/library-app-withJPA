@@ -7,10 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.http.converter.AbstractHttpMessageConverter;
-import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.ViewResolver;
@@ -20,11 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
-import org.thymeleaf.templatemode.TemplateMode;
 
 import javax.sql.DataSource;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Objects;
 
 @Configuration
@@ -43,15 +36,14 @@ public class SpringConfig implements WebMvcConfigurer {
         this.environment = environment;
     }
 
-    //
     @Bean
-    public ViewResolver viewResolver(){
+    public ViewResolver viewResolver() {
         ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();
         thymeleafViewResolver.setTemplateEngine(templateEngine());
         thymeleafViewResolver.setCharacterEncoding("UTF-8");
         return thymeleafViewResolver;
     }
-    //
+
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
@@ -59,7 +51,6 @@ public class SpringConfig implements WebMvcConfigurer {
         templateResolver.setPrefix("/WEB-INF/views/");
         templateResolver.setSuffix(".html");
         templateResolver.setCharacterEncoding("UTF-8");
-//        templateResolver.setTemplateMode(TemplateMode.HTML);    //new line
         return templateResolver;
     }
 
@@ -81,27 +72,8 @@ public class SpringConfig implements WebMvcConfigurer {
         registry.viewResolver(resolver);
     }
 
-    //
-
-//    @Override
-//    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-//        converters.forEach(converter -> {
-//            if (converter instanceof AbstractHttpMessageConverter) {
-//                ((AbstractHttpMessageConverter) converter).setDefaultCharset(StandardCharsets.UTF_8);
-//                if (converter instanceof StringHttpMessageConverter) {
-//                    ((StringHttpMessageConverter) converter).setWriteAcceptCharset(false);
-//                }
-//            } else if (converter instanceof FormHttpMessageConverter) {
-//                ((FormHttpMessageConverter) converter).setCharset(StandardCharsets.UTF_8);
-//                ((FormHttpMessageConverter) converter).setMultipartCharset(StandardCharsets.UTF_8);
-//            }
-//        });
-//    }
-
-    //
-
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(Objects.requireNonNull(environment.getProperty("driver"))); // используем этот способ, т.к. Driver может быть null и мы по ошибке сможем это понять
         dataSource.setUrl(environment.getProperty("url"));
@@ -112,7 +84,7 @@ public class SpringConfig implements WebMvcConfigurer {
 
     // внедряем наш источник данных в jdbcTemplate
     @Bean
-    public JdbcTemplate jdbcTemplate(){
+    public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
 

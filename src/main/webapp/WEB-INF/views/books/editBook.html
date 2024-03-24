@@ -7,7 +7,6 @@
 <body>
 <!-- здесь мы должны использовать атрибут "th:method" от Thymeleaf-->
 <form th:method="PATCH" th:action="@{/library/books/{bookId}(bookId=${book.getBookId()})}" th:object="${book}">
-    <!--  указываем поле, которое есть у нашего объекта person/ обратить внимание на синтаксис  -->
     <label for="titleBook">Введите название: </label>
     <input type="text" th:field="*{title}" id="titleBook">
     <p style="color: red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title error</p>

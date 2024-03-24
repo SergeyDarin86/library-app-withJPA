@@ -22,8 +22,8 @@ public class Person {
     //TODO: посмотреть как настроить Pattern для числового поля, чтобы вводить только 4 символа для г.р.
 //    @Pattern(regexp = "\\d{4}",message = "The format has to be: (4 numbers)")
     @Min(value = 1900, message = "Year of Birthday should be more than 1900")
-    @NotNull(message = "not null")
-    private int yearOfBirthday;
+    @NotNull(message = "Year of Birthday should not be empty")
+    private Integer yearOfBirthday;
 
     public int getPersonId() {
         return personId;
@@ -41,11 +41,11 @@ public class Person {
         this.fullName = fullName;
     }
 
-    public int getYearOfBirthday() {
+    public Integer getYearOfBirthday() {
         return yearOfBirthday;
     }
 
-    public void setYearOfBirthday(int yearOfBirthday) {
+    public void setYearOfBirthday(Integer yearOfBirthday) {
         this.yearOfBirthday = yearOfBirthday;
     }
 }

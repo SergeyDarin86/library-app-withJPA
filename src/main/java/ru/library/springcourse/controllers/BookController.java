@@ -67,12 +67,9 @@ public class BookController {
     @GetMapping("/books/{id}")
     public String showBook(@PathVariable("id") int id, Model model, Model optionalModel,
                            Model modelAddPerson, @ModelAttribute("person") Person person) {
-        // получим одной книги по её id из DAO и передадим на отображение в представление
+
         model.addAttribute("book", bookDAO.show(id));
-        System.out.println(id + " ID from books || " + bookDAO.bookIsUsedByPerson(id) + " <- book is used");
-
         optionalModel.addAttribute("optionalPerson", bookDAO.bookIsUsedByPerson(id));
-
         modelAddPerson.addAttribute("people", personDAO.allReaders());
 
         return "books/showBook";
@@ -97,7 +94,6 @@ public class BookController {
         return "redirect:/library/books";
     }
 
-    // новый метод
     @GetMapping("/books/{id}/makeFree")
     public String makeBookFree(@PathVariable("id") int id) {
         bookDAO.makeBookFree(id);
@@ -105,18 +101,13 @@ public class BookController {
     }
 
     @GetMapping("/books/{id}/assignPerson")
-    public String assignPerson(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
-
-        System.out.println(person.getPersonId() + " PersonId from Controller");
-        System.out.println(id + " BookId");
-
+    public String assignPerson(@PathVariable("id") int id, @ModelAttribute("person") Person person) {
         bookDAO.assignBook(id, person.getPersonId());
         return "redirect: /library/books/{id}";
     }
 
     @DeleteMapping("/books/{id}")
     public String deleteBook(@PathVariable("id") int id) {
-        System.out.println(id + " From DeleteController");
         bookDAO.delete(id);
         return "redirect:/library/books";
     }
@@ -169,10 +160,8 @@ public class BookController {
 
     @DeleteMapping("/people/{id}")
     public String deletePerson(@PathVariable("id") int id) {
-        System.out.println(id + " From DeleteController");
         personDAO.delete(id);
         return "redirect:/library/people";
     }
-
 
 }

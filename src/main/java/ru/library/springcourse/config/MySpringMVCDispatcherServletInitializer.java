@@ -33,8 +33,6 @@ public class MySpringMVCDispatcherServletInitializer extends AbstractAnnotationC
         return new Filter[] { filter };
     }
 
-    //TODO: дописать еще несколько методов
-
     @Override
     public void onStartup(ServletContext aServletContext) throws ServletException {
         super.onStartup(aServletContext);
@@ -50,6 +48,7 @@ public class MySpringMVCDispatcherServletInitializer extends AbstractAnnotationC
                 new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,true, "/*");
     }
 
+    // данный метод также используется для корректного отображения кириллицы
     private void registerCharacterEncodingFilter(ServletContext aContext) {
         EnumSet<DispatcherType> dispatcherTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
 

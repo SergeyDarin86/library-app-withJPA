@@ -17,8 +17,6 @@ public class PersonValidator implements Validator {
         this.personDAO = personDAO;
     }
 
-    // здесь нам необходимо дать понять Spring, к какому классу относится наша валидация
-    // на объектах какого класса можно использовать данную валидацию
     @Override
     public boolean supports(Class<?> clazz) {
         return Person.class.equals(clazz);
@@ -29,13 +27,6 @@ public class PersonValidator implements Validator {
         Person person = (Person) target;
         System.out.println((person == null) + " - person is null");
 
-        // здесь нам нужно посмотреть, есть ли человек с таким же email в БД
-
-        // добавил дополнительное условие для того, чтобы при редактировании страницы пользователя не выходило
-        // сообщение об ошибке "Такой email уже используется" - даже если его не трогать
-        // получалась ситуация, что Validator смотрел в базу и видел, что email уже есть
-        // (хотя он относится к редактируемому на данный момент человеку)
-
         if (personDAO.show(person.getFullName()).isPresent()) {
             System.out.println(person.getFullName() + " <- FullName " + person.getPersonId() + " <- id");
             if (personDAO.show(person.getFullName()).get().getPersonId() != person.getPersonId()) {
@@ -43,7 +34,6 @@ public class PersonValidator implements Validator {
                 errors.rejectValue("fullName", "", "This fullName already is used by someone");
             }
         }
-
 
     }
 

@@ -9,11 +9,12 @@ public class Book {
     @NotNull(message = "Year of Realise should not be empty")
     @Min(value = 1, message = "Year of Realise should be more than 0")
 //    @Pattern(regexp = "\\d{4}",message = "The format has to be: (4 numbers)")
-    private int yearOfRealise;
+
+    private Integer yearOfRealise;
 
     @NotEmpty(message = "Title of Book should not be empty")
     @Size(min = 1, max = 100, message = "Title should be between 1 and 100 characters")
-    @Pattern(regexp = "[А-ЯЁ].+")
+    @Pattern(regexp = "[А-ЯЁ].+", message = "Title book should have format: Apple")
     private String title;
 
     @NotEmpty(message = "Author should not be empty")
@@ -21,7 +22,6 @@ public class Book {
     @Pattern(regexp = "[А-ЯЁ][а-яё]+ [А-ЯЁ][а-яё]+", message = "The Author should have the format: Surname Name")
     private String author;
 
-//    @NotNull(message = "Person id should not be empty")
     private Integer personId;
 
     public int getBookId() {
@@ -32,11 +32,11 @@ public class Book {
         this.bookId = bookId;
     }
 
-    public int getYearOfRealise() {
+    public Integer getYearOfRealise() {
         return yearOfRealise;
     }
 
-    public void setYearOfRealise(int yearOfRealise) {
+    public void setYearOfRealise(Integer yearOfRealise) {
         this.yearOfRealise = yearOfRealise;
     }
 

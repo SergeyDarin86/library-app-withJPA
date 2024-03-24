@@ -35,18 +35,10 @@ public class PersonDAO {
                 .stream().findAny();
     }
 
-//    public Optional<List<Book>> showBookList(int person_id) {
-//        return Optional.of(jdbcTemplate.query("""
-//                            Select * FROM person LEFT JOIN Book
-//                            on person.person_id = Book.person_id
-//                            where Book.person_id=?
-//                """, new BeanPropertyRowMapper<>(Book.class), new Object[]{person_id}).stream().toList());
-//    }
-
     public List<Book> showBookList(int person_id) {
         return jdbcTemplate.query(
                 """
-                        Select * FROM person LEFT JOIN Book 
+                        Select * FROM person LEFT JOIN Book
                         on person.person_id = Book.person_id
                         where Book.person_id=?
                     """

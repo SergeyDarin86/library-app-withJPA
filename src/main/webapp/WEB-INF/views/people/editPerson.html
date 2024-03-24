@@ -10,11 +10,11 @@
     <!--  указываем поле, которое есть у нашего объекта person/ обратить внимание на синтаксис  -->
     <label for="fullName">Введите ФИО: </label>
     <input type="text" th:field="*{fullName}" id="fullName">
-    <p th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">FullName error</p>
+    <p style="color: red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">FullName error</p>
     <br/>
     <label for="yearBirthday">Введите год рождения: </label>
     <input type="text" th:field="*{yearOfBirthday}" id="yearBirthday">
-    <p th:if="${#fields.hasErrors('yearOfBirthday')}" th:errors="*{yearOfBirthday}">Year error</p>
+    <p style="color: red" th:if="${#fields.hasErrors('yearOfBirthday')}" th:errors="*{yearOfBirthday}">Year error</p>
     <br/>
     <input type="text" th:type="hidden" th:field="*{personId}" id="personId">
     <br/>

@@ -14,7 +14,6 @@ public class BookDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
-
     public BookDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -23,7 +22,6 @@ public class BookDAO {
         return jdbcTemplate.query("Select * from Book", new BeanPropertyRowMapper<>(Book.class));
     }
 
-    // пока сохраняю из формы просто ID читателя
     public void save(Book book) {
         jdbcTemplate.update("INSERT INTO Book(person_id, title, year_of_realise, author) VALUES (?,?,?,?)",
                 book.getPersonId(), book.getTitle(), book.getYearOfRealise(), book.getAuthor());
@@ -50,10 +48,8 @@ public class BookDAO {
                 , new BeanPropertyRowMapper<>(Person.class), new Object[]{bookId}).stream().findAny();
     }
 
-    public Book makeBookFree(int bookId) {
+    public void makeBookFree(int bookId) {
         jdbcTemplate.update("UPDATE book SET person_id = NULL WHERE book_id = ?", bookId);
-        return jdbcTemplate.query("SELECT * FROM Book WHERE book_id = ?", new BeanPropertyRowMapper<>(Book.class), new Object[]{bookId})
-                .stream().findFirst().get();
     }
 
     public void assignBook(int bookId, int personId) {
