@@ -1,5 +1,6 @@
 package ru.library.springcourse.dao;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import ru.library.springcourse.models.Person;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
 public class BookDAO {
 
@@ -19,6 +21,7 @@ public class BookDAO {
     }
 
     public List<Book> allBooks() {
+        log.info("Start method index()");
         return jdbcTemplate.query("Select * from Book", new BeanPropertyRowMapper<>(Book.class));
     }
 
