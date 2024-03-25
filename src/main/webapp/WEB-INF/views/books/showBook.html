@@ -13,7 +13,7 @@
     <p style="font-weight: bold">Эта книга свободна. Кому назначить её?</p>
 
     <form th:method="GET" th:action="@{/library/books/{id}/assignPerson(id=${book.getBookId()})}">
-        <label for="person"><b>Выбрать человека:</b>></label>
+        <label for="person"><b>Выбрать человека:</b></label>
         <select th:object="${person}" th:field="*{personId}" id="person">
             <!--    th:value - самый важный атрибут. Он показывает какое значение будет отправляться на сервер
                 при выборе какого-нибудь человека из списка-->
