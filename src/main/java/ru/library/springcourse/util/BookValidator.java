@@ -28,7 +28,7 @@ public class BookValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Book book = (Book) target;
 
-        log.info("Start method validate for Book, bookTitle is: " + book.getTitle());
+        log.info("Start method validate for Book, bookTitle is: {} ", book.getTitle());
 
         if (bookDAO.show(book.getTitle()).isPresent()) {
             if (bookDAO.show(book.getTitle()).get().getBookId() != book.getBookId()){
