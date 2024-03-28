@@ -25,6 +25,10 @@ public class Person {
     @NotNull(message = "Year of Birthday should not be empty")
     private Integer yearOfBirthday;
 
+    // конструктор по умолчанию нужен для Spring
+    public Person() {
+    }
+
     public int getPersonId() {
         return personId;
     }

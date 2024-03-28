@@ -35,6 +35,8 @@ public class PersonDAO {
                 .stream().findAny();
     }
 
+    //TODO: данный запрос можно сделать проще
+    // просто сделать select из Book (без JOIN)
     public List<Book> showBookList(int person_id) {
         return jdbcTemplate.query(
                 """

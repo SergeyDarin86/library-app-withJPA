@@ -94,12 +94,14 @@ public class BookController {
         return "redirect:/library/books";
     }
 
+    //изменить на "PatchMapping"
     @GetMapping("/books/{id}/makeFree")
     public String makeBookFree(@PathVariable("id") int id) {
         bookDAO.makeBookFree(id);
         return "redirect: /library/books/{id}";
     }
 
+    //изменить на "PatchMapping"
     @GetMapping("/books/{id}/assignPerson")
     public String assignPerson(@PathVariable("id") int id, @ModelAttribute("person") Person person) {
         bookDAO.assignBook(id, person.getPersonId());

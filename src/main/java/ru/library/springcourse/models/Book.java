@@ -24,6 +24,9 @@ public class Book {
 
     private Integer personId;
 
+    public Book() {
+    }
+
     public int getBookId() {
         return bookId;
     }
