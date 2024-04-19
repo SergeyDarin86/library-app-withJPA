@@ -9,7 +9,7 @@ import ru.library.springcourse.dao.BookDAO;
 import ru.library.springcourse.models.Book;
 
 @Slf4j
-@Component
+//@Component
 public class BookValidator implements Validator {
 
     private final BookDAO bookDAO;

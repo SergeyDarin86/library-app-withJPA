@@ -10,7 +10,7 @@ import ru.library.springcourse.models.Person;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+//@Component
 public class PersonDAO {
 
     private final JdbcTemplate jdbcTemplate;

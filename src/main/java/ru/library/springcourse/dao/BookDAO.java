@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Component
+//@Component
 public class BookDAO {
 
     private final JdbcTemplate jdbcTemplate;
@@ -27,8 +27,8 @@ public class BookDAO {
 
     public void save(Book book) {
         log.info("Start method saveBook(), title is: {} ", book.getTitle());
-        jdbcTemplate.update("INSERT INTO Book(person_id, title, year_of_realise, author) VALUES (?,?,?,?)",
-                book.getPersonId(), book.getTitle(), book.getYearOfRealise(), book.getAuthor());
+//        jdbcTemplate.update("INSERT INTO Book(person_id, title, year_of_realise, author) VALUES (?,?,?,?)",
+//                book.getPersonId(), book.getTitle(), book.getYearOfRealise(), book.getAuthor());
     }
 
     public Book show(int id) {
@@ -70,8 +70,8 @@ public class BookDAO {
 
     public void update(int id, Book updatedBook) {
         log.info("Start method update for Book, bookId is: {}", id);
-        jdbcTemplate.update("UPDATE Book SET title=?, year_of_realise=?, author=?, person_id=? WHERE book_id=?",
-                updatedBook.getTitle(), updatedBook.getYearOfRealise(), updatedBook.getAuthor(), updatedBook.getPersonId(), id);
+//        jdbcTemplate.update("UPDATE Book SET title=?, year_of_realise=?, author=?, person_id=? WHERE book_id=?",
+//                updatedBook.getTitle(), updatedBook.getYearOfRealise(), updatedBook.getAuthor(), updatedBook.getPersonId(), id);
     }
 
 }
