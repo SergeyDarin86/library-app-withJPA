@@ -6,10 +6,13 @@ import ru.library.springcourse.models.Book;
 import ru.library.springcourse.models.Person;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface BooksRepository extends JpaRepository<Book,Integer> {
+public interface BooksRepository extends JpaRepository<Book, Integer> {
 
     List<Book> findAllByPerson(Person person);
+
+    Optional<Book> findBookByTitle(String title);
 
 }

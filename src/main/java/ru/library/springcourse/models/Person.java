@@ -39,7 +39,8 @@ public class Person {
     @OneToMany(mappedBy = "person")
     @Cascade(value = {
             org.hibernate.annotations.CascadeType.PERSIST,
-            org.hibernate.annotations.CascadeType.MERGE})
+            org.hibernate.annotations.CascadeType.MERGE,
+    org.hibernate.annotations.CascadeType.REFRESH})
     private List<Book>books;
 
     public List<Book> getBooks() {

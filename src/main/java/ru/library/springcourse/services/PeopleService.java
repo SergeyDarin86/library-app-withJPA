@@ -3,7 +3,6 @@ package ru.library.springcourse.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.library.springcourse.models.Book;
 import ru.library.springcourse.models.Person;
 import ru.library.springcourse.repositories.PeopleRepository;
 
@@ -26,7 +25,7 @@ public class PeopleService {
     }
 
     public Person show(int personId){
-        return peopleRepository.findById(personId).get();
+        return peopleRepository.findById(personId).orElse(null);
     }
 
     public Optional<Person> show(String fullName){
@@ -47,6 +46,10 @@ public class PeopleService {
     @Transactional
     public void delete(int id){
         peopleRepository.deleteById(id);
+    }
+
+    public Optional<Person>findPersonByBookId(int bookId){
+        return peopleRepository.findPersonByBookId(bookId);
     }
 
 }
