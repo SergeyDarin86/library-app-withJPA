@@ -2,6 +2,8 @@ package ru.library.springcourse.services;
 
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.library.springcourse.models.Book;
@@ -33,8 +35,24 @@ public class BooksService {
         return booksRepository.findAllByPerson(person);
     }
 
-    public List<Book>findAll(){
-        return booksRepository.findAll();
+    public List<Book>findAll(Integer page, Integer limitOfBooks, Boolean isSortedByYear){
+        if (page != null && limitOfBooks != null && isSortedByYear !=null) {
+            System.out.println("variant #2");
+            return booksRepository.findAll(PageRequest.of(page, limitOfBooks, Sort.by("yearOfRealise"))).getContent();
+        }else
+        if (isSortedByYear !=null) {
+            System.out.println("variant #3");
+            return booksRepository.findAll(Sort.by("yearOfRealise"));
+        }else
+        if (page != null && limitOfBooks != null){
+            System.out.println("variant #4");
+            return booksRepository.findAll(PageRequest.of(page,limitOfBooks)).getContent();
+        } else {
+            System.out.println("variant #1");
+            return booksRepository.findAll();
+        }
+//        return isSortedByYear ? booksRepository.findAll(Sort.by("yearOfRealise")) : booksRepository.findAll();
+
     }
 
     public Book show(int id){

@@ -41,8 +41,10 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public String books(Model model) {
-        model.addAttribute("books", booksService.findAll());
+    public String books(Model model, @RequestParam(value = "isSortedByYear",required = false) Boolean isSortedByYear,
+                                    @RequestParam(value = "page", required = false) Integer page,
+                                    @RequestParam(value = "limitOfBooks", required = false) Integer limitOfBooks) {
+        model.addAttribute("books", booksService.findAll(page, limitOfBooks, isSortedByYear));
         return "/books/books";
     }
 
