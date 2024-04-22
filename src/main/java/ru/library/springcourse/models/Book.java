@@ -2,6 +2,7 @@ package ru.library.springcourse.models;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "book")
@@ -34,6 +35,29 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private Person person;
+
+    @Column(name = "taken_at")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date takenAt;
+
+    @Transient
+    private Boolean isTakenMoreThan10Days;
+
+    public Boolean getIsTakenMoreThan10Days() {
+        return isTakenMoreThan10Days;
+    }
+
+    public void setIsTakenMoreThan10Days(Boolean isTakenMoreThan10Days) {
+        this.isTakenMoreThan10Days = isTakenMoreThan10Days;
+    }
+
+    public Date getTakenAt() {
+        return takenAt;
+    }
+
+    public void setTakenAt(Date takenAt) {
+        this.takenAt = takenAt;
+    }
 
     public Person getPerson() {
         return person;

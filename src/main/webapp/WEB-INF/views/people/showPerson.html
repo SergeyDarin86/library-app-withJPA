@@ -17,7 +17,7 @@
 </tr>
 
 <tr th:each="book : ${books}">
-    <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfRealise()}"> Title </p>
+    <p th:style="${book.getIsTakenMoreThan10Days() ? 'color: red;' : 'color: black;'}" th:text="${book.getTitle() + ', '+ book.getAuthor() + ', ' + book.getYearOfRealise()}"></p>
 </tr>
 
 <hr/>

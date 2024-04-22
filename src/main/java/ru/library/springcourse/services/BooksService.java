@@ -12,6 +12,7 @@ import ru.library.springcourse.repositories.BooksRepository;
 import ru.library.springcourse.repositories.PeopleRepository;
 
 import javax.persistence.EntityManager;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +32,38 @@ public class BooksService {
         this.peopleRepository = peopleRepository;
     }
 
+    //TODO: переделать стремную логику в этом методе
     public List<Book>findAllBooksByPerson(Person person){
+//        countDaysTheBookIsTakenByPerson(person);
+        countDaysTheBookIsTakenByPersonWithLoop(person);
         return booksRepository.findAllByPerson(person);
+    }
+
+    public void countDaysTheBookIsTakenByPerson(Person person){
+       booksRepository.findAllByPerson(person)
+               .forEach(book -> book.setIsTakenMoreThan10Days(book.getYearOfRealise() > 2000));
+    }
+
+    public void countDaysTheBookIsTakenByPersonWithLoop(Person person){
+        List<Book>bookList = booksRepository.findAllByPerson(person);
+        int daysForToday = countOfDaysForSingleDate(new Date());
+        for (Book book: bookList){
+            int daysForTakenBook = countOfDaysForSingleDate(book.getTakenAt());
+            book.setIsTakenMoreThan10Days(differenceBetweenTwoDates(daysForToday, daysForTakenBook) > 10);
+
+        }
+    }
+
+    public Integer countOfDaysForSingleDate(Date date){
+        int seconds = (int) date.toInstant().getEpochSecond();
+        int minutes = seconds / 60;
+        int hours = minutes / 60;
+        int days = hours / 24;
+        return days;
+    }
+
+    public Integer differenceBetweenTwoDates(int daysForToday, int daysForTakenBook){
+        return daysForToday - daysForTakenBook;
     }
 
     public List<Book>findAll(Integer page, Integer limitOfBooks, Boolean isSortedByYear){
@@ -84,6 +115,7 @@ public class BooksService {
 
     @Transactional
     public void makeBookFree(int id){
+        show(id).setTakenAt(null);
         show(id).setPerson(null);
     }
 
@@ -91,6 +123,7 @@ public class BooksService {
     public void assignPerson(int bookId, int personId){
         Session session = entityManager.unwrap(Session.class);
         Person person = session.load(Person.class, personId);
+        show(bookId).setTakenAt(new Date());
         show(bookId).setPerson(person);
     }
 
