@@ -40,7 +40,7 @@ public class BooksService {
             System.out.println("variant #2");
             return booksRepository.findAll(PageRequest.of(page, limitOfBooks, Sort.by("yearOfRealise"))).getContent();
         }else
-        if (isSortedByYear !=null) {
+        if (isSortedByYear !=null && isSortedByYear) {
             System.out.println("variant #3");
             return booksRepository.findAll(Sort.by("yearOfRealise"));
         }else
