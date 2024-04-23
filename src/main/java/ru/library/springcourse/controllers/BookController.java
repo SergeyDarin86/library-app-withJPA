@@ -116,6 +116,19 @@ public class BookController {
         return "redirect:/library/books";
     }
 
+    @GetMapping("/books/search")
+    public String search(Model optionalBook, Model optionalPersonWithBook,
+                         @RequestParam(value = "searchBook", required = false) String searchBook) {
+
+        if (searchBook != null && !searchBook.equals("")) {
+            optionalBook.addAttribute("optionalBook", booksService.getBookByTitleStartingWith(searchBook));
+            if (booksService.getBookByTitleStartingWith(searchBook).isPresent())
+            optionalPersonWithBook.addAttribute("optionalPersonWithBook", peopleService.findPersonByBookId(booksService.getBookByTitleStartingWith(searchBook).get().getBookId()));
+        }
+
+        return "books/searchBook";
+    }
+
     @GetMapping("/newPerson")
     public String newPerson(@ModelAttribute Person person) {
         return "people/newPerson";
@@ -136,15 +149,9 @@ public class BookController {
 
     @GetMapping("/people/{id}")
     public String show(@PathVariable("id") int id, Model model, Model modelBook) {
-//        model.addAttribute("person", peopleService.show(id));
-//        modelBook.addAttribute("books", booksService.findAllBooksByPerson(peopleService.show(id)));
-        newMethod(id,model,modelBook);
-        return "people/showPerson";
-    }
-
-    private void newMethod(int id, Model model, Model modelBook){
         model.addAttribute("person", peopleService.show(id));
         modelBook.addAttribute("books", booksService.findAllBooksByPerson(peopleService.show(id)));
+        return "people/showPerson";
     }
 
     @GetMapping("/people/{id}/edit")

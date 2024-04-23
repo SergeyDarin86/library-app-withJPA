@@ -25,6 +25,7 @@ public class BooksService {
     private final EntityManager entityManager;
 
     private final PeopleRepository peopleRepository;
+
     @Autowired
     public BooksService(BooksRepository booksRepository, EntityManager entityManager, PeopleRepository peopleRepository) {
         this.booksRepository = booksRepository;
@@ -33,74 +34,55 @@ public class BooksService {
     }
 
     //TODO: переделать стремную логику в этом методе
-    public List<Book>findAllBooksByPerson(Person person){
-//        countDaysTheBookIsTakenByPerson(person);
-        countDaysTheBookIsTakenByPersonWithLoop(person);
+    public List<Book> findAllBooksByPerson(Person person) {
+        countDaysTheBookIsTakenByPersonNew(person);
         return booksRepository.findAllByPerson(person);
     }
 
-    public void countDaysTheBookIsTakenByPerson(Person person){
-       booksRepository.findAllByPerson(person)
-               .forEach(book -> book.setIsTakenMoreThan10Days(book.getYearOfRealise() > 2000));
+    public void countDaysTheBookIsTakenByPersonNew(Person person) {
+        booksRepository.findAllByPerson(person).
+                forEach(book -> book.setIsTakenMoreThan10Days(differenceBetweenTwoDates(countOfDaysForSingleDate(new Date()), countOfDaysForSingleDate(book.getTakenAt())) > 10));
     }
 
-    public void countDaysTheBookIsTakenByPersonWithLoop(Person person){
-        List<Book>bookList = booksRepository.findAllByPerson(person);
-        int daysForToday = countOfDaysForSingleDate(new Date());
-        for (Book book: bookList){
-            int daysForTakenBook = countOfDaysForSingleDate(book.getTakenAt());
-            book.setIsTakenMoreThan10Days(differenceBetweenTwoDates(daysForToday, daysForTakenBook) > 10);
-
-        }
+    //получаем количество дней, прошедших от эпохальной даты
+    public Integer countOfDaysForSingleDate(Date date) {
+        return (int) date.toInstant().getEpochSecond() / 60 / 60 / 24;
     }
 
-    public Integer countOfDaysForSingleDate(Date date){
-        int seconds = (int) date.toInstant().getEpochSecond();
-        int minutes = seconds / 60;
-        int hours = minutes / 60;
-        int days = hours / 24;
-        return days;
-    }
-
-    public Integer differenceBetweenTwoDates(int daysForToday, int daysForTakenBook){
+    // высчитываем разницу в днях между текущей датой и датой, когда взяли книгу
+    public Integer differenceBetweenTwoDates(int daysForToday, int daysForTakenBook) {
         return daysForToday - daysForTakenBook;
     }
 
-    public List<Book>findAll(Integer page, Integer limitOfBooks, Boolean isSortedByYear){
-        if (page != null && limitOfBooks != null && isSortedByYear !=null) {
-            System.out.println("variant #2");
+    public List<Book> findAll(Integer page, Integer limitOfBooks, Boolean isSortedByYear) {
+
+        if (page != null && limitOfBooks != null && isSortedByYear != null) {
             return booksRepository.findAll(PageRequest.of(page, limitOfBooks, Sort.by("yearOfRealise"))).getContent();
-        }else
-        if (isSortedByYear !=null && isSortedByYear) {
-            System.out.println("variant #3");
+        } else if (isSortedByYear != null && isSortedByYear) {
             return booksRepository.findAll(Sort.by("yearOfRealise"));
-        }else
-        if (page != null && limitOfBooks != null){
-            System.out.println("variant #4");
-            return booksRepository.findAll(PageRequest.of(page,limitOfBooks)).getContent();
+        } else if (page != null && limitOfBooks != null) {
+            return booksRepository.findAll(PageRequest.of(page, limitOfBooks)).getContent();
         } else {
-            System.out.println("variant #1");
             return booksRepository.findAll();
         }
-//        return isSortedByYear ? booksRepository.findAll(Sort.by("yearOfRealise")) : booksRepository.findAll();
 
     }
 
-    public Book show(int id){
+    public Book show(int id) {
         return booksRepository.findById(id).orElse(null);
     }
 
-    public Optional<Book>show(String title){
+    public Optional<Book> show(String title) {
         return booksRepository.findBookByTitle(title);
     }
 
     @Transactional
-    public void save(Book book){
+    public void save(Book book) {
         booksRepository.save(book);
     }
 
     @Transactional
-    public void update(int id, Book updatedBook){
+    public void update(int id, Book updatedBook) {
         if (!peopleRepository.findPersonByBookId(id).isPresent())
             updatedBook.setPerson(null);
 
@@ -109,22 +91,26 @@ public class BooksService {
     }
 
     @Transactional
-    public void delete(int id){
+    public void delete(int id) {
         booksRepository.deleteById(id);
     }
 
     @Transactional
-    public void makeBookFree(int id){
+    public void makeBookFree(int id) {
         show(id).setTakenAt(null);
         show(id).setPerson(null);
     }
 
     @Transactional
-    public void assignPerson(int bookId, int personId){
+    public void assignPerson(int bookId, int personId) {
         Session session = entityManager.unwrap(Session.class);
         Person person = session.load(Person.class, personId);
         show(bookId).setTakenAt(new Date());
         show(bookId).setPerson(person);
+    }
+
+    public Optional<Book> getBookByTitleStartingWith(String title){
+        return booksRepository.findBookByTitleStartingWith(title);
     }
 
 }
