@@ -117,14 +117,15 @@ public class BookController {
     }
 
     @GetMapping("/books/search")
-    public String search(Model optionalBook, Model optionalPersonWithBook,
-                         @RequestParam(value = "searchBook", required = false) String searchBook) {
+    public String search(@RequestParam(value = "searchBook", required = false) String searchBook,
+                         Model optionalBook, Model optionalPersonWithBook) {
 
         if (searchBook != null && !searchBook.equals("")) {
             optionalBook.addAttribute("optionalBook", booksService.getBookByTitleStartingWith(searchBook));
             if (booksService.getBookByTitleStartingWith(searchBook).isPresent())
             optionalPersonWithBook.addAttribute("optionalPersonWithBook", peopleService.findPersonByBookId(booksService.getBookByTitleStartingWith(searchBook).get().getBookId()));
         }
+        System.out.println("Тестирование search");
 
         return "books/searchBook";
     }

@@ -48,7 +48,7 @@ public class PeopleService {
         peopleRepository.deleteById(id);
     }
 
-    public Optional<Person>findPersonByBookId(int bookId){
+    public Optional<Person>findPersonByBookId(Integer bookId){
         return peopleRepository.findPersonByBookId(bookId);
     }
 
