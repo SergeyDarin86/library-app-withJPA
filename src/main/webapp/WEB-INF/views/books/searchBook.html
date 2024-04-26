@@ -5,29 +5,28 @@
     <title>Поиск книги</title>
 </head>
 <body>
-<form th:method="GET">
+<form th:method="GET" th:action="@{/library/books/search}">
     <label for="searchBook">Введите поисковый запрос: </label>
-    <input type="text" th:name="searchBook" id="searchBook">
+    <input type="text" th:name="searchBook" th:value="${searchBook}" id="searchBook">
     <br/>
     <input type="submit" value="Искать">
+
+    <tr>
+        <p th:if="${not param.isEmpty() and optionalBook.isEmpty()}">Книги не найдено</p>
+    </tr>
+
+    <tr th:if="${optionalBook.isPresent() and optionalPersonWithBook.isPresent()}">
+        <p style="font-weight: bold"
+           th:text="${optionalBook.get().getTitle()+ ', ' + optionalBook.get().getAuthor() + ', ' + optionalBook.get().getYearOfRealise()}"></p>
+        <p th:text="${'Книга сейчас у: ' + optionalPersonWithBook.get().fullName}"></p>
+    </tr>
+
+    <tr th:if="${optionalBook.isPresent() and optionalPersonWithBook.isEmpty()}">
+        <p style="font-weight: bold"
+           th:text="${optionalBook.get().getTitle()+ ', ' + optionalBook.get().getAuthor() + ', ' + optionalBook.get().getYearOfRealise()}"></p>
+        <p th:text="${'Книга свободна'}"></p>
+    </tr>
 </form>
-
-
-<tr th:if="${optionalBook.isEmpty()}">
-    <p style="font-weight: bold">Книги не нейдено</p>
-</tr>
-
-<tr th:if="${optionalBook.isPresent()}">
-    <p style="font-weight: bold"
-       th:text="${optionalBook.get().getTitle() + ', ' + optionalBook.get().getAuthor() + ', ' + optionalBook.get().getYearOfRealise()}"></p>
-<tr th:if="${optionalPersonWithBook.isEmpty()}">
-    <p>Книга свободна</p>
-</tr>
-<tr th:if="${optionalPersonWithBook.isPresent()}">
-    <p th:text="${'Книга сейчас у: ' + optionalPersonWithBook.get().fullName}"></p>
-</tr>
-
-</tr>
 
 </body>
 </html>

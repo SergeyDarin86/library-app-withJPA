@@ -13,6 +13,7 @@ import ru.library.springcourse.util.BookValidator;
 import ru.library.springcourse.util.PersonValidator;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/library")
@@ -41,9 +42,9 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public String books(Model model, @RequestParam(value = "isSortedByYear",required = false) Boolean isSortedByYear,
-                                    @RequestParam(value = "page", required = false) Integer page,
-                                    @RequestParam(value = "limitOfBooks", required = false) Integer limitOfBooks) {
+    public String books(Model model, @RequestParam(value = "isSortedByYear", required = false) Boolean isSortedByYear,
+                        @RequestParam(value = "page", required = false) Integer page,
+                        @RequestParam(value = "limitOfBooks", required = false) Integer limitOfBooks) {
         model.addAttribute("books", booksService.findAll(page, limitOfBooks, isSortedByYear));
         return "/books/books";
     }
@@ -117,18 +118,21 @@ public class BookController {
     }
 
     @GetMapping("/books/search")
-    public String search(@RequestParam(value = "searchBook", required = false) String searchBook,
+    public String search(@RequestParam(value = "searchBook", required = false, defaultValue = "") String searchBook,
                          Model optionalBook, Model optionalPersonWithBook) {
 
         if (searchBook != null && !searchBook.equals("")) {
             optionalBook.addAttribute("optionalBook", booksService.getBookByTitleStartingWith(searchBook));
             if (booksService.getBookByTitleStartingWith(searchBook).isPresent())
-            optionalPersonWithBook.addAttribute("optionalPersonWithBook", peopleService.findPersonByBookId(booksService.getBookByTitleStartingWith(searchBook).get().getBookId()));
+                optionalPersonWithBook.addAttribute("optionalPersonWithBook", peopleService.findPersonByBookId(booksService.getBookByTitleStartingWith(searchBook).get().getBookId()));
+        } else {
+            optionalBook.addAttribute("optionalBook", Optional.empty());
+            optionalPersonWithBook.addAttribute("optionalPersonWithBook", Optional.empty());
         }
-        System.out.println("Тестирование search");
 
         return "books/searchBook";
     }
+
 
     @GetMapping("/newPerson")
     public String newPerson(@ModelAttribute Person person) {
