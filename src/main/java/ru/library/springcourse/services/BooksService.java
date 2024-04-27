@@ -109,8 +109,16 @@ public class BooksService {
         show(bookId).setPerson(person);
     }
 
+    // Недостаток данного метода поиска в том, что должен вернуться только один результат,
+    // но по факту могут быть две книги, у которых название начинается с одних и тех же символов (слов)
+    // например: "Основы инвестиций" и "Основы программирование"
     public Optional<Book> getBookByTitleStartingWith(String title){
-        return booksRepository.findBookByTitleStartingWith(title);
+//        return booksRepository.findBookByTitleStartingWith(title);
+        return null;
     }
 
+    // Метод, который будет возвращать List<Book>
+    public List<Book> getBookListByTitleStartingWith(String title){
+        return booksRepository.findBookByTitleStartingWith(title);
+    }
 }

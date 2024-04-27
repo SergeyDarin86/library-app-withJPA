@@ -13,6 +13,8 @@ import ru.library.springcourse.util.BookValidator;
 import ru.library.springcourse.util.PersonValidator;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -117,16 +119,36 @@ public class BookController {
         return "redirect:/library/books";
     }
 
+    // Работа с Optional
+
+//    @GetMapping("/books/search")
+//    public String search(@RequestParam(value = "searchBook", required = false, defaultValue = "") String searchBook,
+//                         Model optionalBook, Model optionalPersonWithBook) {
+//
+//        if (searchBook != null && !searchBook.equals("")) {
+//            optionalBook.addAttribute("optionalBook", booksService.getBookByTitleStartingWith(searchBook));
+//            if (booksService.getBookByTitleStartingWith(searchBook).isPresent())
+//                optionalPersonWithBook.addAttribute("optionalPersonWithBook", peopleService.findPersonByBookId(booksService.getBookByTitleStartingWith(searchBook).get().getBookId()));
+//        } else {
+//            optionalBook.addAttribute("optionalBook", Optional.empty());
+//            optionalPersonWithBook.addAttribute("optionalPersonWithBook", Optional.empty());
+//        }
+//
+//        return "books/searchBook";
+//    }
+
+    // Работа с List<Book>
     @GetMapping("/books/search")
     public String search(@RequestParam(value = "searchBook", required = false, defaultValue = "") String searchBook,
-                         Model optionalBook, Model optionalPersonWithBook) {
+                         Model books, Model optionalPersonWithBook) {
 
         if (searchBook != null && !searchBook.equals("")) {
-            optionalBook.addAttribute("optionalBook", booksService.getBookByTitleStartingWith(searchBook));
-            if (booksService.getBookByTitleStartingWith(searchBook).isPresent())
-                optionalPersonWithBook.addAttribute("optionalPersonWithBook", peopleService.findPersonByBookId(booksService.getBookByTitleStartingWith(searchBook).get().getBookId()));
+            books.addAttribute("books", booksService.getBookListByTitleStartingWith(searchBook));
+            if (booksService.getBookListByTitleStartingWith(searchBook) != null)
+                optionalPersonWithBook.addAttribute("peopleService", peopleService);
         } else {
-            optionalBook.addAttribute("optionalBook", Optional.empty());
+            books.addAttribute("books", new ArrayList<Book>() {
+            });
             optionalPersonWithBook.addAttribute("optionalPersonWithBook", Optional.empty());
         }
 
