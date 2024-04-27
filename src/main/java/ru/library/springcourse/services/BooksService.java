@@ -1,5 +1,6 @@
 package ru.library.springcourse.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class BooksService {
@@ -69,20 +71,24 @@ public class BooksService {
     }
 
     public Book show(int id) {
+        log.info("Start method show(id) for bookService, bookId is: {} ", id);
         return booksRepository.findById(id).orElse(null);
     }
 
     public Optional<Book> show(String title) {
+        log.info("Start method show(title) for bookService, bookTitle is: {} ", title);
         return booksRepository.findBookByTitle(title);
     }
 
     @Transactional
     public void save(Book book) {
+        log.info("Start method save(Book) for bookService, book is: {} ", book);
         booksRepository.save(book);
     }
 
     @Transactional
     public void update(int id, Book updatedBook) {
+        log.info("Start method update(id, Book) for bookService, id is: {} ", id);
         if (!peopleRepository.findPersonByBookId(id).isPresent())
             updatedBook.setPerson(null);
 
@@ -92,17 +98,20 @@ public class BooksService {
 
     @Transactional
     public void delete(int id) {
+        log.info("Start method delete(id) for bookService, id is: {} ", id);
         booksRepository.deleteById(id);
     }
 
     @Transactional
     public void makeBookFree(int id) {
+        log.info("Start method makeBookFree(id) for bookService, id is: {}", id);
         show(id).setTakenAt(null);
         show(id).setPerson(null);
     }
 
     @Transactional
     public void assignPerson(int bookId, int personId) {
+        log.info("Start method assignPerson(bookId, personId) for bookService, bookId is: {}, personId is : {} ", bookId, personId);
         Session session = entityManager.unwrap(Session.class);
         Person person = session.load(Person.class, personId);
         show(bookId).setTakenAt(new Date());
@@ -119,6 +128,7 @@ public class BooksService {
 
     // Метод, который будет возвращать List<Book>
     public List<Book> getBookListByTitleStartingWith(String title){
+        log.info("Start method getBookListByTitleStartingWith(title) for bookService, title is: {} ", title);
         return booksRepository.findBookByTitleStartingWith(title);
     }
 }

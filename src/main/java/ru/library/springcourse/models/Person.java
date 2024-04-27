@@ -78,4 +78,9 @@ public class Person {
     public void setYearOfBirthday(Integer yearOfBirthday) {
         this.yearOfBirthday = yearOfBirthday;
     }
+
+    @Override
+    public String toString() {
+        return "{fullName=" + fullName + ", yearOfBirthday=" + yearOfBirthday + "}";
+    }
 }
