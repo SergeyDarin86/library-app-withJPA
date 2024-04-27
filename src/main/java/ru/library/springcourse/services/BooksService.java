@@ -91,7 +91,7 @@ public class BooksService {
         log.info("Start method update(id, Book) for bookService, id is: {} ", id);
         if (!peopleRepository.findPersonByBookId(id).isPresent())
             updatedBook.setPerson(null);
-
+        updatedBook.setTakenAt(booksRepository.findById(id).get().getTakenAt());
         updatedBook.setBookId(id);
         booksRepository.save(updatedBook);
     }
@@ -130,5 +130,10 @@ public class BooksService {
     public List<Book> getBookListByTitleStartingWith(String title){
         log.info("Start method getBookListByTitleStartingWith(title) for bookService, title is: {} ", title);
         return booksRepository.findBookByTitleStartingWith(title);
+    }
+
+    // Данный метод можно использовать вместо sql-запроса, который был написан вручную в PeopleRepository
+    public Optional<Person> getBookOwner(int bookId){
+        return booksRepository.findById(bookId).map(Book::getPerson);
     }
 }
