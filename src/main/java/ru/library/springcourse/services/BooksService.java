@@ -89,7 +89,8 @@ public class BooksService {
     @Transactional
     public void update(int id, Book updatedBook) {
         log.info("Start method update(id, Book) for bookService, id is: {} ", id);
-        if (!peopleRepository.findPersonByBookId(id).isPresent())
+//        if (!peopleRepository.findPersonByBookId(id).isPresent())
+        if (!getBookOwner(id).isPresent())
             updatedBook.setPerson(null);
         updatedBook.setTakenAt(booksRepository.findById(id).get().getTakenAt());
         updatedBook.setBookId(id);
@@ -118,9 +119,6 @@ public class BooksService {
         show(bookId).setPerson(person);
     }
 
-    // Недостаток данного метода поиска в том, что должен вернуться только один результат,
-    // но по факту могут быть две книги, у которых название начинается с одних и тех же символов (слов)
-    // например: "Основы инвестиций" и "Основы программирование"
     public Optional<Book> getBookByTitleStartingWith(String title){
 //        return booksRepository.findBookByTitleStartingWith(title);
         return null;
